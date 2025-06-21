@@ -1,0 +1,78 @@
+version: '3.3'
+
+services:
+  web:
+    container_name: web
+    restart: always  # Fixes occasional error: Conflict. The container name "/web" is already in use by container
+    build:
+      context: ..
+      dockerfile: .docker/app/Dockerfile
+    ports:
+      - '127.0.0.1:8000:8000'
+    image: 'websource'
+    env_file: 'environments/staging.env'
+    volumes:
+      - '/root/.ssh:/root/.ssh'
+    command: 'gunicorn config.wsgi:application -k gevent -w 1 -b :8000 --worker-connections=1000 --timeout=4000 --reload --capture-output --enable-stdio-inheritance --log-level=debug --access-logfile=- --log-file=/var/log/error.log'
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+      container_name: 'postgres'
+      restart: always
+      image: 'postgres:16.3'
+      env_file: 'environments/staging.env'
+      ports:
+        - '5432:5432'
+      volumes:
+        - 'pgdata:/var/lib/postgresql/data'
+
+  nginx:
+    container_name: 'nginx'
+    restart: always
+    build: 'nginx/dev'
+    cap_add:
+      - NET_ADMIN
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Madrid
+      - URL=<DNS>
+      - SUBDOMAINS=www,
+      - VALIDATION=http
+      - EMAIL=fdosalom@gmail.com
+    volumes:
+      - 'nginx:/config'
+    depends_on:
+      - web
+    ports:
+      - '443:443'
+      - '80:80' #optional
+
+  celery_worker:
+    container_name: 'celery_worker'
+    restart: always
+    image: 'websource'
+    env_file: 'environments/staging.env'
+    command: 'python -m celery -A config worker -l debug'
+    depends_on:
+      - web
+
+  celery_beat:
+    container_name: 'celery_beat'
+    restart: always
+    image: 'websource'
+    env_file: 'environments/staging.env'
+    command: 'python -m celery -A config beat --pidfile=celerypid.log -l debug'
+    depends_on:
+      - web
+
+  redis:
+    container_name: 'redis'
+    restart: always
+    image: redis:6.2.5
+
+volumes:
+  nginx:
+  pgdata:
