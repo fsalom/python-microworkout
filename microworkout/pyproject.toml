@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "python-base-project"
+version = "0.1.0"
+description = ""
+authors = ["Aitor Poquet <aitorpoquet@rudo.es>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1"
+django-oauth-toolkit = "^3.0"
+django-cors-headers = "^4.6"
+social-auth-app-django = "^5.4"
+firebase-admin = "^6.6"
+django-extensions = "^3.2"
+django-nested-admin = "^4.1"
+psycopg2 = "^2.9"
+celery = "^5.4"
+gevent = "^24.11"
+gunicorn = "^23.0"
+redis = "^5.2"
+django-storages = "^1.14"
+boto3 = "^1.36"
+pydantic = "^2.10"
+rudo-commons = {git = "git@bitbucket.org:rudoapps/gula-python-common.git", rev = "main"}
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
