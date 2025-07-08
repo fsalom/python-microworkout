@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Aitor Poquet <aitorpoquet@rudo.es>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
 python = "^3.12"
@@ -22,7 +23,7 @@ redis = "^5.2"
 django-storages = "^1.14"
 boto3 = "^1.36"
 pydantic = "^2.10"
-rudo-commons = {git = "git@bitbucket.org:rudoapps/gula-python-common.git", rev = "main"}
+# rudo-commons = {git = "git@bitbucket.org:rudoapps/gula-python-common.git", rev = "main"}
 
 
 [build-system]

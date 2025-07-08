@@ -1740,28 +1740,6 @@ files = [
 pyasn1 = ">=0.1.3"
 
 [[package]]
-name = "rudo-commons"
-version = "0.1.9"
-description = ""
-optional = false
-python-versions = "^3.12"
-groups = ["main"]
-files = []
-develop = false
-
-[package.dependencies]
-django = "^5.1"
-django-oauth-toolkit = "^3.0"
-django-storages = "^1.14"
-pydantic = "^2.10"
-
-[package.source]
-type = "git"
-url = "ssh://git@bitbucket.org/rudoapps/gula-python-common.git"
-reference = "main"
-resolved_reference = "ffb3d8d9632cb5d19a4ae29f39c55bbbd62f520b"
-
-[[package]]
 name = "s3transfer"
 version = "0.11.2"
 description = "An Amazon S3 Transfer Manager"
@@ -2026,4 +2004,4 @@ testing = ["coverage[toml]", "zope.event", "zope.testing"]
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "4412aa0f80691615d0468bf5fef89d26c84349ce0f26b685a794f6f7cab81bc8"
+content-hash = "57eff684d6900a92440b2b8f6a5292b629fedead3038259f6b608e9475cbc047"
