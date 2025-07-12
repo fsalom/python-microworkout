@@ -7,6 +7,5 @@ class WorkoutsConfig(AppConfig):
     label = 'workouts'
 
     def ready(self):
-        # Importar modelos para que Django los detecte
         from .models import Workout  # noqa
         from .models import WorkoutExercise, WorkoutSet, Exercise  # noqa
