@@ -54,3 +54,17 @@ class WorkoutService:
         """Recupera un workout concreto por ID y usuario."""
         found = self._repo.get_by_id_for_user(user_id, workout_id)
         return vars(found) if found else None
+
+    def list_exercise_history(self, user_id: str, exercise_id: str) -> List[dict]:
+        """Obtiene el historial de un ejercicio de un usuario."""
+        domain_list = self._repo.list_for_user(user_id)
+        history: List[dict] = []
+        for w in domain_list:
+            for e in w.exercises:
+                if e.exercise_id == exercise_id:
+                    history.append({
+                        'workout_id': w.id,
+                        'date': w.date,
+                        'sets': [vars(s) for s in e.sets],
+                    })
+        return history
