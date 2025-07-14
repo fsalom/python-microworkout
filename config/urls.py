@@ -23,7 +23,10 @@ from django.contrib import admin
 from django.urls import include, path
 from oauth2_provider import urls as oauth2_urls
 
-from commons_package.commons.url_error_responses import (url_400, url_403, url_404, url_500)
+try:
+    from commons_package.commons.url_error_responses import (url_400, url_403, url_404, url_500)
+except ImportError:
+    url_400 = url_403 = url_404 = url_500 = None
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,11 +34,6 @@ urlpatterns = [
     path('api/', include('driving.api.v1.urls')),
 ]
 
-if not bool(int(os.environ.get('DEBUG', "0"))):
-    handler400 = url_400
-    handler403 = url_403
-    handler404 = url_404
-    handler500 = url_500
 
 if bool(int(os.environ.get('DEBUG', "0"))):
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

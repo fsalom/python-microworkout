@@ -34,3 +34,10 @@ def workout_retrieve(request, id):
     if not found:
         return JsonResponse({"detail": "Not found"}, status=404)
     return JsonResponse(WorkoutOut(**found).dict(), status=200)
+
+
+@require_http_methods(["GET"])
+@login_required
+def workout_history(request, exercise_id):
+    data = _service.list_exercise_history(str(request.user.id), exercise_id)
+    return JsonResponse(data, safe=False, status=200)
