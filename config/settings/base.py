@@ -27,7 +27,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY', "")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = bool(int(os.environ.get('DEBUG', 1)))
 
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', ['*']).split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
 CSRF_TRUSTED_ORIGINS = os.environ.get('CSRF_TRUSTED_ORIGINS', 'https://').split(',')
 API_ACCESS_TOKENS = os.environ.get('API_ACCESS_TOKENS', "").split(',')
 
@@ -42,10 +42,12 @@ DJANGO_APPS = [
 ]
 
 OWN_APPS = [
-    # 'driven.db.users',
+    'driven.db.users',
+    'driven.db.workouts',
+    'driven.db.microworkouts',
 ]
 
-# AUTH_USER_MODEL = 'users.UserDBO'
+AUTH_USER_MODEL = 'users.UserDBO'
 
 THIRD_PARTY_APPS = [
     'django_extensions',
@@ -120,16 +122,24 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-DATABASES = {
-    'default': {
-        "ENGINE": os.environ.get("DB_ENGINE"),
-        'NAME': os.environ.get('POSTGRES_DB'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
-        'HOST': os.environ.get('POSTGRES_HOST'),
-        'PORT': os.environ.get('POSTGRES_PORT'),
+if os.environ.get('DB_ENGINE'):
+    DATABASES = {
+        'default': {
+            'ENGINE': os.environ.get('DB_ENGINE'),
+            'NAME': os.environ.get('POSTGRES_DB'),
+            'USER': os.environ.get('POSTGRES_USER'),
+            'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+            'HOST': os.environ.get('POSTGRES_HOST'),
+            'PORT': os.environ.get('POSTGRES_PORT'),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 USE_PUSH_NOTIFICATIONS = bool(int(os.environ.get('USE_PUSH_NOTIFICATIONS', "0")))
 
